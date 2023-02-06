@@ -17,8 +17,7 @@ public class Polygon
         m_UVs           = new List<Vector2>() { Vector2.zero, Vector2.zero, Vector2.zero };
         m_SmoothNormals = true;
 
-        // Hot Pink is an excellent default color because you'll notice instantly if 
-        // you forget to set it to something else.
+       
         m_Color = new Color32(255, 0, 255, 255);
     }
 
@@ -36,8 +35,7 @@ public class Polygon
         }
 
         // A polygon and its neighbor will share exactly
-        // two vertices. Ergo, if this poly shares two
-        // vertices with the other, then they are neighbors.
+        // two vertices. 
 
         return shared_vertices == 2;
     }
