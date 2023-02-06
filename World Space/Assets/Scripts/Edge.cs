@@ -2,12 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// An Edge is a boundary between two Polygons. We're going to be working with loops of Edges, so
-// each Edge will have a Polygon that's inside the loop and a Polygon that's outside the loop.
-// We also want to Split apart the inner and outer Polygons so that they no longer share the same
-// vertices. This means the Edge will need to keep track of what the outer Polygon's vertices are
-// along its border with the inner Polygon, and what the inner Polygon's vertices are for that
-// same border.
+// An Edge is a boundary between two Polygons. We're going to be working with loops of Edges
 
 public class Edge
 {
@@ -87,8 +82,7 @@ public class EdgeSet : HashSet<Edge>
     }
 
     // GetUniqueVertices - Get a list of all the vertices referenced
-    // in this edge loop, with no duplicates.
-
+   
     public List<int> GetUniqueVertices()
     {
         List<int> vertices = new List<int>();
@@ -104,9 +98,7 @@ public class EdgeSet : HashSet<Edge>
         return vertices;
     }
 
-    // GetInwardDirections - For each vertex on this edge, calculate the direction that
-    // points most deeply inwards. That's the average of the inward direction of each edge
-    // that the vertex appears on.
+    
 
     public Dictionary<int, Vector3> GetInwardDirections(List<Vector3> vertexPositions)
     {
@@ -140,7 +132,7 @@ public class EdgeSet : HashSet<Edge>
             }
         }
 
-        // Now we average the contributions that each vertex received, and we can return the result.
+        
 
         foreach(KeyValuePair<int, int> kvp in numContributions)
         {

@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// The Planet class is responsible for generating a tiny procedural planet. It does this by subdividing an Icosahedron, then
-// randomly selecting groups of Polygons to extrude outwards. These become the lowlands and hills of the planet, while the
-// unextruded Polygons become the ocean.
+
 
 public class Planet : MonoBehaviour
 {
-    // These public parameters can be tweaked to give different styles to your planet.
+    // These public parameters can be tweaked to give different styles
 
     public Material m_GroundMaterial;
     public Material m_OceanMaterial;
@@ -38,8 +36,7 @@ public class Planet : MonoBehaviour
         InitAsIcosohedron();
         Subdivide(3);
 
-        // When we begin extruding polygons, we'll need each one to know who its immediate
-        //neighbors are. Calculate that now.
+        /
 
         CalculateNeighbors();
 
@@ -239,15 +236,7 @@ public class Planet : MonoBehaviour
 
     public int GetMidPointIndex(Dictionary<int, int> cache, int indexA, int indexB)
     {
-        // We create a key out of the two original indices
-        // by storing the smaller index in the upper two bytes
-        // of an integer, and the larger index in the lower two
-        // bytes. By sorting them according to whichever is smaller
-        // we ensure that this function returns the same result
-        // whether you call
-        // GetMidPointIndex(cache, 5, 9)
-        // or...
-        // GetMidPointIndex(cache, 9, 5)
+     
 
         int smallerIndex = Mathf.Min(indexA, indexB);
         int greaterIndex = Mathf.Max(indexA, indexB);
