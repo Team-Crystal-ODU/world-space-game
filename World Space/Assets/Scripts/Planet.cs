@@ -36,7 +36,6 @@ public class Planet : MonoBehaviour
         InitAsIcosohedron();
         Subdivide(3);
 
-        /
 
         CalculateNeighbors();
 
