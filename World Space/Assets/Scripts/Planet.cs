@@ -205,7 +205,7 @@ public class Planet : MonoBehaviour
                 int b = poly.m_Vertices[1];
                 int c = poly.m_Vertices[2];
 
-           .
+           
 
                 int ab = GetMidPointIndex(midPointCache, a, b);
                 int bc = GetMidPointIndex(midPointCache, b, c);
