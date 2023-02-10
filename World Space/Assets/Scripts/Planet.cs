@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-
 public class Planet : MonoBehaviour
 {
-    // These public parameters can be tweaked to give different styles
+    // These public parameters can be tweaked.
 
     public Material m_GroundMaterial;
     public Material m_OceanMaterial;
@@ -23,19 +22,18 @@ public class Planet : MonoBehaviour
     GameObject m_GroundMesh;
     GameObject m_OceanMesh;
 
-    // The subdivided icosahedron that we use to generate our planet is represented as a list
-    // of Polygons, and a list of Vertices for those Polygons:
+   
     List<Polygon> m_Polygons;
     List<Vector3> m_Vertices;
 
     public void Start()
     {
-        // Create an icosahedron, subdivide it three times so that we have plenty of polys
-        // to work with.
+        
 
         InitAsIcosohedron();
         Subdivide(3);
 
+     
 
         CalculateNeighbors();
 
@@ -93,7 +91,7 @@ public class Planet : MonoBehaviour
 
         m_OceanMesh = GenerateMesh("Ocean Surface", m_OceanMaterial);
 
-        // Back to land for a while! We start by making it green. =)
+        //green land
 
         foreach (Polygon landPoly in landPolys)
         {
@@ -102,7 +100,7 @@ public class Planet : MonoBehaviour
 
         // The Extrude function will raise the land Polygons up out of the water.
         // It also generates a strip of new Polygons to connect the newly raised land
-        // back down to the water level. We can color this vertical strip of land brown like dirt.
+        // back down to the water level
 
         sides = Extrude(landPolys, 0.05f);
 
@@ -124,7 +122,7 @@ public class Planet : MonoBehaviour
         //Hills have dark ambient occlusion on the bottom, and light on top.
         sides.ApplyAmbientOcclusionTerm(1.0f, 0.0f);
 
-        // Time to return to the oceans.
+  
 
         sides = Extrude(oceanPolys, -0.02f);
         sides.ApplyColor(colorOcean);
@@ -141,7 +139,7 @@ public class Planet : MonoBehaviour
 
         deepOceanPolys.ApplyColor(colorDeepOcean);
 
-        // Okay, we're done! Let's generate an actual game mesh for this planet.
+    
 
         if (m_GroundMesh != null)
             Destroy(m_GroundMesh);
@@ -154,10 +152,7 @@ public class Planet : MonoBehaviour
         m_Polygons = new List<Polygon>();
         m_Vertices = new List<Vector3>();
 
-        // An icosahedron has 12 vertices, and
-        // since they're completely symmetrical the
-        // formula for calculating them is kind of
-        // symmetrical too:
+   
 
         float t = (1.0f + Mathf.Sqrt(5.0f)) / 2.0f;
 
@@ -174,8 +169,6 @@ public class Planet : MonoBehaviour
         m_Vertices.Add(new Vector3(-t,  0, -1).normalized);
         m_Vertices.Add(new Vector3(-t,  0,  1).normalized);
 
-        // And here's the formula for the 20 sides,
-        // referencing the 12 vertices we just created.
 
         m_Polygons.Add(new Polygon( 0, 11,  5));
         m_Polygons.Add(new Polygon( 0,  5,  1));
@@ -212,43 +205,36 @@ public class Planet : MonoBehaviour
                 int b = poly.m_Vertices[1];
                 int c = poly.m_Vertices[2];
 
-                // Use GetMidPointIndex to either create a
-                // new vertex between two old vertices, or
-                // find the one that was already created.
+           .
 
                 int ab = GetMidPointIndex(midPointCache, a, b);
                 int bc = GetMidPointIndex(midPointCache, b, c);
                 int ca = GetMidPointIndex(midPointCache, c, a);
 
-                // Create the four new polygons using our original
-                // three vertices, and the three new midpoints.
                 newPolys.Add(new Polygon(a, ab, ca));
                 newPolys.Add(new Polygon(b, bc, ab));
                 newPolys.Add(new Polygon(c, ca, bc));
                 newPolys.Add(new Polygon(ab, bc, ca));
             }
-            // Replace all our old polygons with the new set of
-            // subdivided ones.
+            
             m_Polygons = newPolys;
         }
     }
 
     public int GetMidPointIndex(Dictionary<int, int> cache, int indexA, int indexB)
     {
-     
+        
 
         int smallerIndex = Mathf.Min(indexA, indexB);
         int greaterIndex = Mathf.Max(indexA, indexB);
         int key = (smallerIndex << 16) + greaterIndex;
 
-        // If a midpoint is already defined, just return it.
+        
 
         int ret;
         if (cache.TryGetValue(key, out ret))
             return ret;
 
-        // If we're here, it's because a midpoint for these two
-        // vertices hasn't been created yet. Let's do that now!
 
         Vector3 p1 = m_Vertices[indexA];
         Vector3 p2 = m_Vertices[indexB];
@@ -257,8 +243,7 @@ public class Planet : MonoBehaviour
         ret = m_Vertices.Count;
         m_Vertices.Add(middle);
 
-        // Add our new midpoint to the cache so we don't have
-        // to do this again. =)
+     
 
         cache.Add(key, ret);
         return ret;
@@ -315,8 +300,7 @@ public class Planet : MonoBehaviour
             var stitch_poly2 = new Polygon(edge.m_OuterVerts[1],
                                            edge.m_InnerVerts[1],
                                            edge.m_InnerVerts[0]);
-            // Add the new stitched faces as neighbors to
-            // the original Polys.
+           
             edge.m_InnerPoly.ReplaceNeighbor(edge.m_OuterPoly, stitch_poly2);
             edge.m_OuterPoly.ReplaceNeighbor(edge.m_InnerPoly, stitch_poly1);
 
@@ -327,7 +311,7 @@ public class Planet : MonoBehaviour
             stichedPolys.Add(stitch_poly2);
         }
 
-        //Swap to the new vertices on the inner polys.
+       
         foreach (Polygon poly in polys)
         {
             for (int i = 0; i < 3; i++)
@@ -349,9 +333,6 @@ public class Planet : MonoBehaviour
         PolySet stitchedPolys = StitchPolys(polys, out stitchedEdge);
         List<int> verts = polys.GetUniqueVertices();
 
-        // Take each vertex in this list of polys, and push it
-        // away from the center of the Planet by the height
-        // parameter.
 
         foreach (int vert in verts)
         {
@@ -370,9 +351,6 @@ public class Planet : MonoBehaviour
 
         Dictionary<int, Vector3> inwardDirections = stitchedEdge.GetInwardDirections(m_Vertices);
 
-        // Push each vertex inwards, then correct
-        // it's height so that it's as far from the center of
-        // the planet as it was before.
 
         foreach (KeyValuePair<int, Vector3> kvp in inwardDirections)
         {

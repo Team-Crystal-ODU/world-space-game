@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// An Edge is a boundary between two Polygons. We're going to be working with loops of Edges
+
 
 public class Edge
 {
@@ -34,19 +34,7 @@ public class Edge
                 m_InwardDirectionVertex = vertex;
         }
 
-        // Calculate the 'inward direction', a vector that goes from the midpoint of the edge, to the third vertex on
-        // the inner poly (the vertex that isn't part of the edge). This will come in handy later if we want to push
-        // vertices directly away from the edge.
-
-        // For consistency, we want the 'winding order' of the edge to be the same as that of the inner
-        // polygon. So the vertices in the edge are stored in the same order that you would encounter them if
-        // you were walking clockwise around the polygon. That means the pair of edge vertices will be:
-        // [1st inner poly vertex, 2nd inner poly vertex] or
-        // [2nd inner poly vertex, 3rd inner poly vertex] or
-        // [3rd inner poly vertex, 1st inner poly vertex]
-        //
-        // The formula above will give us [1st inner poly vertex, 3rd inner poly vertex] though, so
-        // we check for that situation and reverse the vertices.
+      
 
         if(m_InnerVerts[0] == inner_poly.m_Vertices[0] && m_InnerVerts[1] == inner_poly.m_Vertices[2])
         {
@@ -82,7 +70,8 @@ public class EdgeSet : HashSet<Edge>
     }
 
     // GetUniqueVertices - Get a list of all the vertices referenced
-   
+    // in this edge loop, with no duplicates.
+
     public List<int> GetUniqueVertices()
     {
         List<int> vertices = new List<int>();
@@ -98,7 +87,9 @@ public class EdgeSet : HashSet<Edge>
         return vertices;
     }
 
-    
+    // GetInwardDirections - For each vertex on this edge, calculate the direction that
+    // points most deeply inwards. That's the average of the inward direction of each edge
+    // that the vertex appears on.
 
     public Dictionary<int, Vector3> GetInwardDirections(List<Vector3> vertexPositions)
     {
@@ -132,7 +123,7 @@ public class EdgeSet : HashSet<Edge>
             }
         }
 
-        
+        // Now we average the contributions that each vertex received, and we can return the result.
 
         foreach(KeyValuePair<int, int> kvp in numContributions)
         {

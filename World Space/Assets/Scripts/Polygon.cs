@@ -17,7 +17,7 @@ public class Polygon
         m_UVs           = new List<Vector2>() { Vector2.zero, Vector2.zero, Vector2.zero };
         m_SmoothNormals = true;
 
-       
+        
         m_Color = new Color32(255, 0, 255, 255);
     }
 
@@ -35,7 +35,8 @@ public class Polygon
         }
 
         // A polygon and its neighbor will share exactly
-        // two vertices. 
+        // two vertices. Ergo, if this poly shares two
+        // vertices with the other, then they are neighbors.
 
         return shared_vertices == 2;
     }
@@ -70,8 +71,7 @@ public class PolySet : HashSet<Polygon>
     // from old ones.
     public int m_StitchedVertexThreshold = -1;
 
-    //Given a set of Polys, calculate the set of Edges
-    //that surround them.
+ 
 
     public EdgeSet CreateEdgeSet()
     {
