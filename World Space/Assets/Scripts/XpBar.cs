@@ -12,13 +12,13 @@ public class ButtonTest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        xpbar.fillAmount = 0;
+    // xpbar.fillAmount = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        xpbar.fillAmount += fillspeed * Time.deltaTime;
+        //xpbar.fillAmount += fillspeed * Time.deltaTime;
     }
 
    
