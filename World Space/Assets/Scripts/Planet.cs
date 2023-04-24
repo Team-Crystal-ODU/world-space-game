@@ -26,7 +26,7 @@ public class Planet : MonoBehaviour
     List<Polygon> m_Polygons;
     List<Vector3> m_Vertices;
 
-    public void Start()
+    public void Awake()
     {
         
 
@@ -145,6 +145,9 @@ public class Planet : MonoBehaviour
             Destroy(m_GroundMesh);
 
         m_GroundMesh = GenerateMesh("Ground Mesh", m_GroundMaterial);
+
+       var groundmesh = m_GroundMesh.AddComponent<MeshCollider>();
+        groundmesh.convex = true;
     }
 
     public void InitAsIcosohedron()
